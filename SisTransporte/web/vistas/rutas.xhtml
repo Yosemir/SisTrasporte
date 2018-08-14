@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panelGrid columns="1">
+                <p:outputLabel value=""/>
+                <p:inputMask value="" placeholder="Hora de viaje" mask="99:99"/>
+                <p:commandButton value="Agregar" actionListener="#{rutaC.registrar()}"/>
+            </p:panelGrid>
+        </h:form>
+
+        <p:dataTable id="TBLVia" value="#{rutaC.listvia}" var="list">
+            <p:column headerText="Hora">
+
+            </p:column>
+        </p:dataTable>
+    </h:body>
+</html>
+
