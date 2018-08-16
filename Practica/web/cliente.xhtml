@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Bus" action="bus">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Cliente" action="cliente">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Personal" action="personal">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Rutas" action="rutas">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+            </p:tabMenu>
+        </h:form>
+        <h:form id="primerfor">
+            <p:panelGrid columns="2">
+                <p:inputText value="#{clienteC.cliente.nomCli}" placeholder="Nombre" maxlength="30">
+                    <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                </p:inputText>
+                <p:inputText value="#{clienteC.cliente.apelliCli}" placeholder="Apellido" maxlength="30">
+                    <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                </p:inputText>
+                <p:outputLabel value="Tipo de documento"/>
+                <p:selectOneMenu value="#{clienteC.cliente.tipoDoc}">
+                    <f:selectItem itemLabel="Carnet De extragenria" itemValue="CEX"/>
+                    <f:selectItem itemLabel="DNI" itemValue="DNI"/>
+                </p:selectOneMenu>
+                <p:inputText value="#{clienteC.cliente.numDoc}" placeholder="Nro Documento" maxlength="9">
+                    <p:keyFilter regEx="/[0-9]/"/>
+                </p:inputText>
+                <p:inputMask value="#{clienteC.cliente.fecViaje}" placeholder="Fecha de viaje" mask="99-99-9999"/>
+                <p:inputMask value="#{clienteC.cliente.horaviaCli}" placeholder="Hola de viaje" maxlength="9" mask="99:99"/>
+                <p:outputLabel value="Tipo de Servicio"/>
+                <p:selectOneMenu value="#{clienteC.cliente.tipoServi}">
+                    <f:selectItem itemLabel="Vip" itemValue="VIP"/>
+                    <f:selectItem itemLabel="Comun" itemValue="COM"/>
+                </p:selectOneMenu>
+                <p:inputMask value="#{clienteC.cliente.precioViaCli}" placeholder="Precio" mask="99.99"/>
+            </p:panelGrid>
+        </h:form>
+        <p:commandButton value="Agregar" actionListener="#{clienteC.agregar()}" update=":ForTbl"/>
+        <p:commandButton value="Listar" actionListener="#{clienteC.listar()}" update=":ForTbl"/>
+
+
+        <h:form id="ForTbl">
+            <p:dataTable id="lisrut" value="#{clienteC.listclie}" var="clie" > 
+                <p:column headerText="Nombre">
+                    <p:outputLabel value="#{clie.nomCli}"/>
+                </p:column>
+                <p:column headerText="Apellido">
+                    <p:outputLabel value="#{clie.apelliCli}"/>
+                </p:column>
+                <p:column headerText="Tipo documento">
+                    <p:outputLabel value="#{clie.tipoDoc}"/>
+                </p:column>
+                <p:column headerText="Nro Documento">
+                    <p:outputLabel value="#{clie.numDoc}"/>
+                </p:column>
+                <p:column headerText="Fecha de viaje">
+                    <p:outputLabel value="#{clie.fecViaje}"/>
+                </p:column>
+                <p:column headerText="Hora de viaje">
+                    <p:outputLabel value="#{clie.horaviaCli}"/>
+                </p:column>
+                <p:column headerText="Tipo servicio">
+                    <p:outputLabel value="#{clie.tipoServi}"/>
+                </p:column>
+                <p:column headerText="Precio">
+                    <p:outputLabel value="#{clie.precioViaCli}"/>
+                </p:column>
+                <p:column headerText="Modificar">
+                    <p:commandLink value="Editar" oncomplete="PF('wigactuali').show()" update=":forDialo">
+                        <f:setPropertyActionListener value="#{clie}" target="#{clienteC.selectcli}"/>
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog widgetVar="wigactuali">
+            <h:form id="forDialo">
+                <p:panelGrid columns="1" >
+                    <p:inputText value="#{clienteC.selectcli.nomCli}" placeholder="Nombre" maxlength="30">
+                        <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                    </p:inputText>
+                    <p:inputText value="#{clienteC.selectcli.apelliCli}" placeholder="Apellido" maxlength="30">
+                        <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                    </p:inputText>
+                    <p:outputLabel value="Tipo de documento"/>
+                    <p:selectOneMenu value="#{clienteC.selectcli.tipoDoc}">
+                        <f:selectItem itemLabel="Carnet De extragenria" itemValue="CEX"/>
+                        <f:selectItem itemLabel="DNI" itemValue="DNI"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{clienteC.selectcli.numDoc}" placeholder="Nro Documento" maxlength="9">
+                        <p:keyFilter regEx="/[0-9]/"/>
+                    </p:inputText>
+                    <p:inputText value="#{clienteC.selectcli.fecViaje}" placeholder="Fecha de viaje" />
+                    <p:inputMask value="#{clienteC.selectcli.horaviaCli}" placeholder="Hola de viaje" maxlength="9" mask="99:99"/>
+                    <p:outputLabel value="Tipo de Servicio"/>
+                    <p:selectOneMenu value="#{clienteC.selectcli.tipoServi}">
+                        <f:selectItem itemLabel="Vip" itemValue="VIP"/>
+                        <f:selectItem itemLabel="Comun" itemValue="COM"/>
+                    </p:selectOneMenu>
+                    <p:inputMask value="#{clienteC.selectcli.precioViaCli}" placeholder="Precio" mask="99.99"/>
+                    <p:commandButton value="Actualizar" actionListener="#{clienteC.actualizar()}" update=":ForTbl" oncomplete="PF('wigactuali').hide()"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Bus" action="bus">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Cliente" action="cliente">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Personal" action="personal">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Rutas" action="rutas">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+            </p:tabMenu>
+        </h:form>
+        <h:form id="primerfor">
+            <p:panelGrid columns="2">
+                <p:inputText value="#{personalC.personal.nomPer}" placeholder="Nombre" maxlength="30">
+                    <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                </p:inputText>
+                <p:inputText value="#{personalC.personal.apePer}" placeholder="Apellido" maxlength="30">
+                    <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                </p:inputText>
+                <p:outputLabel value="Tipo de documento"/>
+                <p:selectOneMenu value="#{personalC.personal.tipDoc}">
+                    <f:selectItem itemLabel="Carnet De extragenria" itemValue="CEX"/>
+                    <f:selectItem itemLabel="DNI" itemValue="DNI"/>
+                </p:selectOneMenu>
+                <p:inputText value="#{personalC.personal.numDoc}" placeholder="Nro Documento" maxlength="9">
+                    <p:keyFilter regEx="/[0-9]/"/>
+                </p:inputText>
+                <p:inputMask value="#{personalC.personal.fecNacPer}" placeholder="Fecha de nacimiento" mask="99/99/9999"/>
+                <p:outputLabel value="Sexo"/>
+                <p:selectOneMenu value="#{personalC.personal.sexPer}">
+                    <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                    <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                </p:selectOneMenu>
+                <p:inputText value="#{personalC.personal.celularPer}" placeholder="Celular" maxlength="9">
+                    <p:keyFilter regEx="/[0-9]/"/>
+                </p:inputText>
+                <p:inputText value="#{personalC.personal.direcPer}" placeholder="Direccion"/>
+                <p:outputLabel value="Tipo de personal"/>
+                <p:selectOneMenu value="#{personalC.personal.tipoPer}">
+                    <f:selectItem itemLabel="Vendedor" itemValue="Vend"/>
+                    <f:selectItem itemLabel="Contador" itemValue="Cont"/>
+                    <f:selectItem itemLabel="Conductor" itemValue="Cond"/>
+                    <f:selectItem itemLabel="Ayudante" itemValue="Ayuda"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </h:form>
+        <p:commandButton value="Agregar" actionListener="#{personalC.agregar()}" update=":ForTbl"/>
+        <p:commandButton value="Listar" actionListener="#{personalC.listar()}" update=":ForTbl"/>
+
+
+        <h:form id="ForTbl">
+            <p:dataTable id="lisrut" value="#{personalC.listPer}" var="per" > 
+                <p:column headerText="Placa">
+                    <p:outputLabel value="#{per.nomPer}"/>
+                </p:column>
+                <p:column headerText="Asientos">
+                    <p:outputLabel value="#{per.apePer}"/>
+                </p:column>
+                <p:column headerText="Tipo de documento">
+                    <p:outputLabel value="#{per.tipDoc}"/>
+                </p:column>
+                <p:column headerText="Numero de documento">
+                    <p:outputLabel value="#{per.numDoc}"/>
+                </p:column>
+                <p:column headerText="Sexo">
+                    <p:outputLabel value="#{per.sexPer}"/>
+                </p:column>
+                <p:column headerText="Fecha de nacimineto">
+                    <p:outputLabel value="#{per.fecNacPer}"/>
+                </p:column>
+                <p:column headerText="Celular">
+                    <p:outputLabel value="#{per.celularPer}"/>
+                </p:column>
+                <p:column headerText="Direccion">
+                    <p:outputLabel value="#{per.direcPer}"/>
+                </p:column>
+                <p:column headerText="Tipo de personal">
+                    <p:outputLabel value="#{per.tipoPer}"/>
+                </p:column>
+                <p:column headerText="Modificar">
+                    <p:commandLink value="Editar" oncomplete="PF('wigactuali').show()" update=":forDialo">
+                        <f:setPropertyActionListener value="#{per}" target="#{personalC.selectPer}"/>
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog widgetVar="wigactuali">
+            <h:form id="forDialo">
+                <p:panelGrid columns="1" >
+                    <p:inputText value="#{personalC.selectPer.nomPer}" placeholder="Nombre" maxlength="30">
+                        <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                    </p:inputText>
+                    <p:inputText value="#{personalC.selectPer.apePer}" placeholder="Apellido" maxlength="30">
+                        <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                    </p:inputText>
+                    <p:outputLabel value="Tipo de documento"/>
+                    <p:selectOneMenu value="#{personalC.selectPer.tipDoc}">
+                        <f:selectItem itemLabel="Carnet De extragenria" itemValue="CEX"/>
+                        <f:selectItem itemLabel="DNI" itemValue="DNI"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{personalC.selectPer.numDoc}" placeholder="Nro Documento" maxlength="9">
+                        <p:keyFilter regEx="/[0-9]/"/>
+                    </p:inputText>
+                    <p:outputLabel value="Sexo"/>
+                    <p:selectOneMenu value="#{personalC.selectPer.sexPer}">
+                        <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                        <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{personalC.selectPer.fecNacPer}" placeholder="Fecha de nacimiento"/>
+                    <p:inputText value="#{personalC.selectPer.celularPer}" placeholder="Celular" maxlength="9">
+                        <p:keyFilter regEx="/[0-9]/"/>
+                    </p:inputText>
+                    <p:inputText value="#{personalC.selectPer.direcPer}" placeholder="Direccion">
+                        <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                    </p:inputText>
+                    <p:outputLabel value="Tipo de personal"/>
+                    <p:selectOneMenu value="#{personalC.selectPer.tipoPer}">
+                        <f:selectItem itemLabel="Vendedor" itemValue="Vend"/>
+                        <f:selectItem itemLabel="Contador" itemValue="Cont"/>
+                        <f:selectItem itemLabel="Conductor" itemValue="Cond"/>
+                        <f:selectItem itemLabel="Ayudante" itemValue="Ayuda"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu value="#{personalC.selectPer.estaPer}">
+                        <f:selectItem itemLabel="Activo" itemValue="A"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="I"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Actualizar" actionListener="#{personalC.actualizar()}" update=":ForTbl" oncomplete="PF('wigactuali').hide()"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Bus" action="bus">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Cliente" action="cliente">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Personal" action="personal">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Rutas" action="rutas">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+            </p:tabMenu>
+        </h:form>
+        <h:form id="primerfor">
+            <p:panelGrid columns="1">
+                <p:inputText value="#{busC.bus.placabus}" placeholder="Placa" maxlength="7"/>
+                <p:inputText value="#{busC.bus.asientobus}" placeholder="Nro de Asientos" maxlength="2"/>
+                <p:inputText value="#{busC.bus.marcabus}" placeholder="Marca" maxlength="10"/>
+            </p:panelGrid>
+        </h:form>
+        <p:commandButton value="Agregar" actionListener="#{busC.agregar()}" update=":ForTbl"/>
+        <p:commandButton value="Listar" actionListener="#{busC.listar()}" update=":ForTbl"/>
+
+
+        <h:form id="ForTbl">
+            <p:dataTable id="lisrut" value="#{busC.listbus}" var="bus" > 
+                <p:column headerText="Placa">
+                    <p:outputLabel value="#{bus.placabus}"/>
+                </p:column>
+                <p:column headerText="Asientos">
+                    <p:outputLabel value="#{bus.asientobus}"/>
+                </p:column>
+                <p:column headerText="Marca">
+                    <p:outputLabel value="#{bus.marcabus}"/>
+                </p:column>
+                <p:column headerText="Modificar">
+                    <p:commandLink value="Editar" oncomplete="PF('wigactuali').show()" update=":forDialo">
+                        <f:setPropertyActionListener value="#{bus}" target="#{busC.selectbus}"/>
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog widgetVar="wigactuali">
+            <h:form id="forDialo">
+                <p:panelGrid columns="1" >
+                    <p:inputText  value="#{busC.selectbus.placabus}"  maxlength="7"/>
+                    <p:inputText  value="#{busC.selectbus.asientobus}" maxlength="2" />
+                    <p:inputText  value="#{busC.selectbus.marcabus}" maxlength="10"/>
+                    <p:selectOneMenu value="#{busC.selectbus.estbus}">
+                        <f:selectItem itemLabel="Activo" itemValue="A"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="I"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Actualizar" actionListener="#{busC.actualizar()}" update=":ForTbl" oncomplete="PF('wigactuali').hide()"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

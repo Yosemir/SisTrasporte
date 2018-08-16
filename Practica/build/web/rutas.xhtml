@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Bus" action="bus">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Cliente" action="cliente">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Personal" action="personal">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Rutas" action="rutas">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+            </p:tabMenu>
+        </h:form>
+        <h:form id="primerfor">
+            <p:panelGrid columns="1">
+                <p:inputText value="#{rutaC.rut.nomrut}" placeholder="Nombre">
+                    <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                </p:inputText>
+            </p:panelGrid>
+        </h:form>
+        <p:commandButton value="Agregar" actionListener="#{rutaC.agregar()}" update=":ForTbl"/>
+        <p:commandButton value="listar" actionListener="#{rutaC.listar()}" update=":ForTbl"/>
+
+        <h:form id="ForTbl">
+            <p:dataTable id="lisrut" value="#{rutaC.lisrut}" var="ruta" > 
+                <p:column headerText="Rutas">
+                    <p:outputLabel value="#{ruta.nomrut}"/>
+                </p:column>
+                <p:column headerText="Modificar">
+                    <p:commandLink value="Editar" oncomplete="PF('wigactuali').show()" update=":forDialo">
+                        <f:setPropertyActionListener value="#{ruta}" target="#{rutaC.selectrut}"/>
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog widgetVar="wigactuali">
+            <h:form id="forDialo">
+                <p:panelGrid columns="1" >
+                    <p:inputText  value="#{rutaC.selectrut.nomrut}" >
+                        <p:keyFilter regEx="/[a-z_ñ _á_é_í_ó_ú]/i"/>
+                    </p:inputText>
+                    <p:selectOneMenu value="#{rutaC.selectrut.estrut}">
+                        <f:selectItem itemLabel="Activo" itemValue="A"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="I"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Actualizar" actionListener="#{rutaC.actualizar()}" update=":ForTbl" oncomplete="PF('wigactuali').hide()"/>
+                </p:panelGrid>
+
+
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+
